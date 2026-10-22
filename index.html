@@ -1,0 +1,276 @@
+<title>Propuesta Casa A</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: columna editorial, paquetes como tarjetas comparables, cronograma en barras y condiciones en tabla. */
+:root {
+  --bg: #F7F6F3;
+  --surface: #EBEBEB;
+  --fg: #111111;
+  --muted: #5E5A55;
+  --line: #D6D0C6;
+  --sand: #B0A08A;
+  --taupe: #A39A90;
+  --accent: #6F655A;
+  color-scheme: light;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 15px/1.6 "Work Sans", system-ui, sans-serif;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 24px 48px;
+}
+h1, h2, h3 { text-wrap: balance; margin: 0; font-family: "Archivo", "Arial Narrow", sans-serif; font-weight: 800; font-stretch: 125%; letter-spacing: -0.01em; }
+h1 { font-size: clamp(40px, 8vw, 84px); line-height: 0.95; text-transform: uppercase; }
+h2 { font-size: clamp(24px, 3.6vw, 34px); line-height: 1.05; text-transform: uppercase; margin-bottom: 16px; }
+.oval { display: inline-block; border: 2px solid currentColor; border-radius: 50%; padding: 8px 22px; font-family: "Archivo", sans-serif; font-stretch: 125%; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; line-height: 1.1; }
+figure { margin: 0; }
+figure img { display: block; width: 100%; max-width: 100%; height: auto; border: 1px solid var(--fg); }
+figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; font-family: "IBM Plex Mono", ui-monospace, monospace; }
+h3 { font-size: 22px; line-height: 1.2; margin-bottom: 6px; }
+p { margin: 0 0 12px; max-width: 65ch; }
+.label { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.mono { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 13px; }
+.wrap { max-width: 960px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px; }
+.note { font-size: 13px; color: var(--muted); }
+
+/* Portada */
+.cover { display: flex; flex-direction: column; gap: 24px; padding-top: 24px; }
+.swatches { display: flex; }
+.swatches span { flex: 1; height: 48px; }
+
+/* Índice visible */
+.index { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); border-top: 2px solid var(--fg); }
+.index a { padding: 14px 0; border-bottom: 1px solid var(--line); color: var(--fg); text-decoration: none; font-weight: 600; text-transform: uppercase; font-size: 13px; letter-spacing: 0.08em; }
+.index a:hover, .index a:focus-visible { color: var(--accent); outline: none; text-decoration: underline; }
+
+/* Paquetes */
+.packs { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; align-items: stretch; }
+.pack { border: 1px solid var(--fg); background: var(--bg); padding: 24px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.pack.hit { background: var(--fg); color: var(--bg); }
+.pack.hit .label, .pack.hit p, .pack.hit li, .pack.hit .note { color: var(--surface); }
+.pack .tier { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; align-self: flex-start; padding: 4px 8px; border: 1px solid currentColor; }
+.pack .price { font-family: "Archivo", sans-serif; font-stretch: 125%; font-size: 52px; font-weight: 700; line-height: 1; }
+.pack .price small { font-size: 16px; font-weight: 600; margin-left: 4px; }
+.pack ul { margin: 0; padding-left: 18px; flex: 1; }
+.pack li { margin-bottom: 6px; }
+.pack .time { border-top: 1px solid var(--line); padding-top: 12px; font-family: "IBM Plex Mono", monospace; font-size: 13px; }
+.pack.hit .time { border-color: var(--taupe); }
+.bars { display: flex; gap: 4px; }
+.bars span { height: 8px; flex: 1; background: var(--line); }
+.bars span.on { background: var(--fg); }
+.pack.hit .bars span { background: var(--muted); }
+.pack.hit .bars span.on { background: var(--bg); }
+
+/* Qué está incluido en cada paquete (comparación) */
+.compare { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; min-width: 520px; }
+th, td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+th { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+th.c, td.c { text-align: center; }
+td.c .dot { display: inline-block; width: 14px; height: 14px; border: 1.5px solid var(--fg); border-radius: 50%; }
+td.c .dot.on { background: var(--fg); }
+
+/* Cronograma */
+.row { display: grid; grid-template-columns: minmax(120px, 200px) 1fr; gap: 16px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.bar-wrap { position: relative; height: 26px; background: var(--surface); min-width: 0; }
+.bar { position: absolute; top: 0; bottom: 0; background: var(--sand); }
+.bar.dark { background: var(--fg); }
+.bar.taupe { background: var(--taupe); }
+.bar-note { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+/* Condiciones */
+.conds { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0 32px; border-top: 2px solid var(--fg); }
+.conds div { padding: 16px 0; border-bottom: 1px solid var(--line); }
+.conds strong { display: block; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; font-weight: 600; }
+
+/* Pendientes */
+.pending { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); border-top: 2px solid var(--fg); }
+.pending div { padding: 14px 0; border-bottom: 1px solid var(--line); display: flex; gap: 12px; align-items: flex-start; }
+.pending .box { width: 16px; height: 16px; border: 1.5px solid var(--fg); flex: 0 0 16px; margin-top: 3px; }
+
+@media (max-width: 560px) {
+  .row { grid-template-columns: 1fr; gap: 8px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<main class="wrap">
+
+<header class="cover" id="inicio">
+  <h1>Casa A<br>Sitio web</h1>
+  <p>Espacio boutique multifuncional y hub creativo: estudio, activaciones, podcast, eventos pequeños y rental de mobiliario y props de arte.</p>
+  <div class="swatches" aria-label="Paleta de referencia del cliente (provisoria)">
+    <span style="background:#000000"></span>
+    <span style="background:#8F8F8F"></span>
+    <span style="background:#EBEBEB"></span>
+    <span style="background:#B0A08A"></span>
+    <span style="background:#A39A90"></span>
+  </div>
+  <p class="note">Paleta de referencia de cinco tonos neutros cálidos. Los códigos HEX se confirman en el branding.</p>
+</header>
+
+<nav class="index" aria-label="Índice de la propuesta">
+  <a href="#paquetes">Paquetes</a>
+  <a href="#incluye">Qué incluye</a>
+  <a href="#estudio">Estudio</a>
+  <a href="#rental-flujo">Rental</a>
+  <a href="#tiempos">Tiempos</a>
+  <a href="#condiciones">Condiciones</a>
+  <a href="#pendientes">Pendientes</a>
+</nav>
+
+<section id="paquetes" aria-labelledby="t-paq">
+  <h2 id="t-paq">Elegí tu paquete</h2>
+  <p>Podés empezar con el más chico y sumar módulos cuando el negocio lo pida. Cada paquete incluye el anterior.</p>
+  <div class="packs">
+    <article class="pack">
+      <span class="tier">Paquete 1 · Inicio</span>
+      <h3>Presencia</h3>
+      <div class="bars" aria-hidden="true"><span class="on"></span><span></span><span></span></div>
+      <div class="price">USD 450<small>único</small></div>
+      <ul>
+        <li>Home con portada visual</li>
+        <li>Casa A: marca y propuesta</li>
+        <li>Estudio: fotos, planos y ficha</li>
+        <li>Contacto: RRSS, teléfono, mapa</li>
+        <li>Bloque de rental con consulta directa</li>
+        <li>3 rondas de correcciones</li>
+      </ul>
+      <p class="time"><span class="oval">7 días hábiles</span></p>
+    </article>
+    <article class="pack hit">
+      <span class="tier oval">Paquete 2 · Recomendado</span>
+      <h3>Presencia + Rental</h3>
+      <div class="bars" aria-hidden="true"><span class="on"></span><span class="on"></span><span></span></div>
+      <div class="price">USD 800<small>único</small></div>
+      <ul>
+        <li>Todo el Paquete 1</li>
+        <li>Catálogo de ítems con foto, medidas y precio</li>
+        <li>Categorías y filtros</li>
+        <li>PDF descargable del catálogo</li>
+        <li>Descuento del 10% sobre el total de las dos fases</li>
+      </ul>
+      <p class="time"><span class="oval">+ 2 a 3 semanas</span></p>
+    </article>
+    <article class="pack">
+      <span class="tier">Paquete 3 · Completo</span>
+      <h3>Reservas online</h3>
+      <div class="bars" aria-hidden="true"><span class="on"></span><span class="on"></span><span class="on"></span></div>
+      <div class="price">USD 1.700<small>único</small></div>
+      <ul>
+        <li>Todo el Paquete 2</li>
+        <li>Calendario de disponibilidad por ítem</li>
+        <li>Pre-reserva y seña</li>
+        <li>Cobro online opcional</li>
+        <li>Descuento del 15% sobre el total</li>
+      </ul>
+      <p class="time"><span class="oval">+ 2 a 6 semanas</span></p>
+    </article>
+  </div>
+  <p class="note">Montos en USD, sin hosting ni dominio, con un estimado de USD 15 a 25 por año para el dominio y USD 5 a 10 por mes para el hosting, aparte. Dependiendo del proovedor</p>
+</section>
+
+<section id="incluye" aria-labelledby="t-inc">
+  <h2 id="t-inc">Qué incluye cada uno</h2>
+  <div class="compare">
+    <table>
+      <thead>
+        <tr><th>Módulo</th><th class="c">Inicio</th><th class="c">Rental</th><th class="c">Reservas</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Home, Casa A, Estudio, Contacto</td><td class="c"><span class="dot on" aria-label="incluido"></span></td><td class="c"><span class="dot on" aria-label="incluido"></span></td><td class="c"><span class="dot on" aria-label="incluido"></span></td></tr>
+        <tr><td>Correcciones (3 rondas)</td><td class="c"><span class="dot on" aria-label="incluido"></span></td><td class="c"><span class="dot on" aria-label="incluido"></span></td><td class="c"><span class="dot on" aria-label="incluido"></span></td></tr>
+        <tr><td>Catálogo de ítems y PDF</td><td class="c"><span class="dot" aria-label="no incluido"></span></td><td class="c"><span class="dot on" aria-label="incluido"></span></td><td class="c"><span class="dot on" aria-label="incluido"></span></td></tr>
+        <tr><td>Calendario y pre-reserva</td><td class="c"><span class="dot" aria-label="no incluido"></span></td><td class="c"><span class="dot" aria-label="no incluido"></span></td><td class="c"><span class="dot on" aria-label="incluido"></span></td></tr>
+        <tr><td>Cobro online</td><td class="c"><span class="dot" aria-label="no incluido"></span></td><td class="c"><span class="dot" aria-label="no incluido"></span></td><td class="c"><span class="dot" aria-label="opcional"></span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="estudio" aria-labelledby="t-est">
+  <h2 id="t-est"><span class="oval">Estudio</span></h2>
+  <p>La sección Estudio muestra el espacio físico con fotos, planos y ficha técnica. Esta imagen es solo una referencia de dirección visual, no una foto del espacio de Casa A.</p>
+  <figure>
+    <img src="estudio-referencia.jpg" alt="Referencia visual de estudio fotográfico blanco con fondo negro y silla mecedora">
+    <figcaption>Referencia visual. Las fotos finales de Casa A las aporta el cliente.</figcaption>
+  </figure>
+</section>
+
+<section id="rental-flujo" aria-labelledby="t-rf">
+  <h2 id="t-rf">Cómo funciona el rental</h2>
+  <div class="conds">
+    <div><strong>1 · Explorar</strong>Fichas por categoría con foto, medidas y precio por día.</div>
+    <div><strong>2 · Elegir</strong>Seleccionan ítems y fechas desde la ficha.</div>
+    <div><strong>3 · Consultar</strong>La consulta llega por WhatsApp o formulario con los ítems ya cargados.</div>
+    <div><strong>4 · Confirmar</strong>Casa A revisa disponibilidad y responde con el presupuesto.</div>
+    <div><strong>5 · Reservar</strong>Con la seña, el ítem queda reservado. Con el Paquete 3, esto ocurre online.</div>
+  </div>
+  <p class="note"><span class="oval">Lo que necesitamos de ustedes</span> foto, medidas, categoría, precio por día y cantidad disponible de cada ítem.</p>
+</section>
+
+<section id="tiempos" aria-labelledby="t-tie">
+  <h2 id="t-tie"><span class="oval">Tiempos</span></h2>
+  <p>La web base puede estar lista en 7 días hábiles si el contenido llega el primer día. Rental y reservas se suman después.</p>
+  <div role="img" aria-label="Barras de tiempo: web base 1 semana, paleta 2 a 3 días, logo 1 a 2 semanas en paralelo, rental 1 a 2 semanas, reservas 1 a 5 semanas">
+    <div class="row">
+      <div><strong>Web base</strong><div class="bar-note">7 días hábiles</div></div>
+      <div class="bar-wrap"><div class="bar dark" style="left:0;width:19%"></div></div>
+    </div>
+    <div class="row">
+      <div><strong>Paleta y tipografía</strong><div class="bar-note">3 a 4 días</div></div>
+      <div class="bar-wrap"><div class="bar" style="left:0;width:8%"></div></div>
+    </div>
+    <div class="row">
+      <div><strong>Logo</strong><div class="bar-note">2 a 3 semanas, en paralelo</div></div>
+      <div class="bar-wrap"><div class="bar taupe" style="left:0;width:30%"></div></div>
+    </div>
+    <div class="row">
+      <div><strong>Rental</strong><div class="bar-note">2 a 3 semanas</div></div>
+      <div class="bar-wrap"><div class="bar" style="left:30%;width:30%"></div></div>
+    </div>
+    <div class="row">
+      <div><strong>Reservas</strong><div class="bar-note">2 a 6 semanas</div></div>
+      <div class="bar-wrap"><div class="bar taupe" style="left:40%;width:55%"></div></div>
+    </div>
+  </div>
+  <p class="note">Escala de 8 semanas. Los plazos dependen de que el material llegue y las aprobaciones se respondan a tiempo.</p>
+</section>
+
+<section id="condiciones" aria-labelledby="t-con">
+  <h2 id="t-con"><span class="oval">Condiciones</span></h2>
+  <div class="conds">
+    <div><strong>Forma de pago</strong>Tres pagos: al aprobar, a mitad de la web y a la entrega.</div>
+    <div><strong>Rondas de cambios</strong>Tres en la web. Cambios adicionales se cotizan aparte.</div>
+    <div><strong>Propiedad</strong>Logo, guía de marca, código y archivos quedan a nombre de Casa A al cierre del pago.</div>
+    <div><strong>Material</strong>Fotos, planos y textos se entregan el primer día de cada fase.</div>
+    <div><strong>Aprobaciones</strong>Feedback dentro de 3 días hábiles. Pasado ese plazo, el cronograma se corre.</div>
+    <div><strong>Hosting y dominio</strong>Costo recurrente, a cargo de Casa A.</div>
+  </div>
+</section>
+
+<section id="pendientes" aria-labelledby="t-pen">
+  <h2 id="t-pen">Para confirmar</h2>
+  <div class="pending">
+    <div><span class="box" aria-hidden="true"></span><span>Códigos HEX de la paleta</span></div>
+    <div><span class="box" aria-hidden="true"></span><span>Cantidad de ítems del rental</span></div>
+    <div><span class="box" aria-hidden="true"></span><span>Quién entrega fotos, planos y textos</span></div>
+    <div><span class="box" aria-hidden="true"></span><span>Precios visibles o consulta por mensaje</span></div>
+    <div><span class="box" aria-hidden="true"></span><span>Cobro online o solo consulta</span></div>
+    <div><span class="box" aria-hidden="true"></span><span>Fecha objetivo de lanzamiento</span></div>
+    <div><span class="box" aria-hidden="true"></span><span>Presupuesto del logo</span></div>
+  </div>
+</section>
+
+<footer>
+  <p class="note">Propuesta preparada por Coral Estudio para Alejandro y Andrea · Casa A.</p>
+</footer>
+
+</main>
